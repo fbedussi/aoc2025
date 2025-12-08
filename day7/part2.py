@@ -10,9 +10,9 @@ def main(isTest):
 
     def get_val(cell):
         match cell:
-            case '.' | '^':
+            case "." | "^":
                 return 0
-            case 'S':
+            case "S":
                 return 1
             case _:
                 return cell
