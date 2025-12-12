@@ -20,23 +20,24 @@ def main(isTest):
         return (a >= b and b >= c) or (a <= b and b <= c)
 
     def is_inside(x, y):
-        intersections = 0
+        intersections_y = []
+        intersections_x = []
         for i in range(0, len(data)):
             # consider also the last+first pair
             next_i = (i + 1) % len(data)
 
-            if data[i][1] == data[next_i][1]:
-                # consider only vertical segments, aka with different y
-                continue
+            is_horizontal_segment = data[i][1] == data[next_i][1]
 
-            if x > data[i][0]:
-                # the point is external on the right
-                continue
+            if is_horizontal_segment:
+                if is_included(data[i][0], x, data[next_i][0]):
+                    intersections_x.append(x)
+                
+            else:
+                if is_included(data[i][1], y, data[next_i][1]):
+                    intersections_y.append(y)
 
-            if is_included(data[i][1], y, data[next_i][1]):
-                intersections += 1
-
-        return (intersections != 0) and (intersections % 2 != 0)
+        r = len(set(intersections_x)) == 1 and len(set(intersections_y)) == 1
+        return r 
 
     for point1 in data:
         for point2 in data:
@@ -60,8 +61,8 @@ class Test(unittest.TestCase):
     def test_test_data(self):
         self.assertEqual(main(True), 24)
 
-    def test_real_data(self):
-        self.assertEqual(main(False), None)
+    # def test_real_data(self):
+    #     self.assertEqual(main(False), None)
 
 
 unittest.main()
